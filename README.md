@@ -41,6 +41,8 @@ org     	GitHub organization name
 **Example**
 GET http://localhost:8083/api/github/repos?org=my-org
 **Sample JSON output**
+**Sample JSON output**
+```json
 [
   {
     "repoName": "example-repo",
@@ -57,6 +59,7 @@ GET http://localhost:8083/api/github/repos?org=my-org
     ]
   }
 ]
+```
 
 **Github Token Setup (Classic Token)**:
 This project uses a **GitHub Personal Access Token (Classic)** for authentication.
