@@ -1,4 +1,4 @@
-package com.example.githubreport.exception;
+package com.example.GithubAccessReport.exception;
 
 public class RepoNotFoundException extends RuntimeException {
     public RepoNotFoundException(String repoName) {

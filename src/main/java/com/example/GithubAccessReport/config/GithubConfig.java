@@ -1,4 +1,4 @@
-package com.example.githubreport.config;
+package com.example.GithubAccessReport.config;
 
 
 import org.springframework.beans.factory.annotation.Value;

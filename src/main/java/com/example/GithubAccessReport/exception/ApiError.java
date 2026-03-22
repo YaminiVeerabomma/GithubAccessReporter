@@ -1,4 +1,4 @@
-package com.example.githubreport.exception;
+package com.example.GithubAccessReport.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

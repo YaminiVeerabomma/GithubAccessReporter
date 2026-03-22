@@ -1,4 +1,4 @@
-package com.example.githubreport.exception;
+package com.example.GithubAccessReport.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.example.githubreport.config;
+package com.example.GithubAccessReport.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
