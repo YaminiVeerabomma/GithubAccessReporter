@@ -1,47 +1,104 @@
-# **Github Access Report**
+## Overview
 
-A Spring Boot application that fetches **all repositories of a GitHub organization** along with their **collaborators and roles**.
+**GitHub Access Report** is a Spring Boot service that retrieves **all repositories in a GitHub organization** and returns each repository’s **collaborators** and **permission roles** (admin, maintain, write, triage, read).
 
-## **1️⃣ How to Run the Project**
+## Features
 
-**Clone the repository**
-git clone <your-repo-url>
-cd GithubAccessReporter
-**Set your GitHub Personal Access Token (PAT)**
-# Replace <your_token> with your actual GitHub token
+- Fetches repositories for a given organization
+- Fetches collaborators for each repository
+- Includes collaborator permission level per repository
+- Uses **Spring WebClient** for non-blocking GitHub API calls
+- Centralized error handling via `GithubApiException`
+
+## Prerequisites
+
+- Java 17+ (or your project’s configured Java version)
+- Maven 3.8+
+- A **GitHub Personal Access Token (Classic)**
+    - Scopes:
+        - `repo`
+        - `read:org`
+
+## Configuration
+
+You can configure the app using environment variables plus `application.properties`.
+
+### 1) Create a token (classic)
+
+1. GitHub → **Settings**
+2. **Developer settings** → **Personal access tokens** → **Tokens (classic)**
+3. **Generate new token (classic)**
+4. Select scopes: `repo`, `read:org`
+5. Copy the token
+
+> ⚠️ Save the token securely. You won’t be able to view it again.
+> 
+
+### 2) Export the token
+
+```bash
 export GITHUB_TOKEN=<your_token>
-**Build and run**
-mvn clean install
-mvn spring-boot:run
-**Note**: Default port = 8083
-Change it in application.properties if required.
+```
+
+### 3) [application.properties](http://application.properties)
+
+```
+# App
 server.port=8083
 spring.application.name=GithubAccessReport
 
-## **2️⃣ Authentication**
-The application uses a **GitHub Personal Access Token (PAT)**.
-Required scopes:
-
-- repo
-- read:org
-
-Configure in application.properties:
+# GitHub
 github.token=${GITHUB_TOKEN}
 github.api.base-url=https://api.github.com
-github.org-name=<your-org-name>
-Every request automatically includes:
-Authorization: Bearer <token>
+github.org-name=<your-default-org>
+```
 
-## **3️⃣ API Endpoint**
-**Fetch all repos + collaborators**
-GET http://localhost:8083/api/github/repos
-**Optional query param**
-Param    	Description
-org     	GitHub organization name
-**Example**
-GET http://localhost:8083/api/github/repos?org=my-org
-**Sample JSON output**
-**Sample JSON output**
+## Run locally
+
+### Clone
+
+```bash
+git clone <your-repo-url>
+cd GithubAccessReporter
+```
+
+### Build
+
+```bash
+mvn clean install
+```
+
+### Run
+
+```bash
+mvn spring-boot:run
+```
+
+The application will start on `http://localhost:8083` (unless you changed `server.port`).
+
+## API
+
+### Get repositories + collaborators
+
+**Endpoint**
+
+```
+GET /api/github/repos
+```
+
+**Optional query parameter**
+
+- `org` (string): GitHub organization name. If omitted, the app uses `github.org-name` from configuration.
+
+**Examples**
+
+```bash
+curl "http://localhost:8083/api/github/repos"
+curl "http://localhost:8083/api/github/repos?org=my-org"
+```
+
+**Sample response**
+
 ```json
 [
   {
@@ -61,41 +118,28 @@ GET http://localhost:8083/api/github/repos?org=my-org
 ]
 ```
 
-**Github Token Setup (Classic Token)**:
-This project uses a **GitHub Personal Access Token (Classic)** for authentication.
+## Test with Postman
 
-### **Steps to generate token**
+1. Create a **GET** request:
+    - `http://localhost:8083/api/github/repos`
+2. Authorization:
+    - Type: **Bearer Token**
+    - Token: your GitHub PAT
+3. Send the request
 
-1. Go to GitHub → Settings  
-2. Navigate to **Developer Settings → Personal Access Tokens → Tokens (classic)**  
-3. Click **Generate new token (classic)**  
-4. Select scopes:
-   - `repo`
-   - `read:org`
-5. Copy the generated token
- > ⚠️ Save the token securely. You won’t be able to see it again.
-## **⚙️ Configure Token in Application**
+## Notes / Assumptions
 
-Set the token as an environment variable:
-export GITHUB_TOKEN=ghp_xxxxxxxxxxxxxx
+- If `org` is not provided, the app uses the default org from configuration.
+- Permission role is derived from GitHub collaborator permissions.
+- Designed to handle organizations with large numbers of repositories and users (pagination is required for real-world orgs).
 
-## **4️⃣ Test Using Postman**
-1.Open Postman
-2.Create a GET request:
-http://localhost:8083/api/github/repos
-3.Go to Header Select Authorization → Bearer Token
-4.Paste your GitHub PAT
-5.Click Send
+## Troubleshooting
 
+- **401 Unauthorized**: token is missing/invalid or the required scopes are not selected.
+- **403 Forbidden**: rate limit exceeded or insufficient access to the org/repo.
+- **404 Not Found**: org name is wrong or the token cannot access the org.
 
+## Security
 
-## **5️⃣ Assumptions & Design Choices**
-- Uses WebClient for non-blocking requests
-- If org param missing → uses default org from properties
-- Role is extracted from GitHub permissions
-- Returning full list of collaborators per repo
-- Custom error handling using GithubApiException
-- Supports organizations with 100+ repos and 1000+ users
-
-
-
+- Do not commit tokens to source control.
+- Prefer environment variables or secret managers in production.
