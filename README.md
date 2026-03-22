@@ -9,11 +9,11 @@ A Spring Boot application that fetches **all repositories of a GitHub organizati
 
 1. **Clone the repository**:
 
-```bash
+
 git clone <your-repo-url>
 cd GithubAccessReporter
 
-2**Set up your GitHub Personal Access Token (PAT)**:
+2.**Set up your GitHub Personal Access Token (PAT)**:
 ```bash
 # Replace <your_github_token> with your actual token
 export GITHUB_TOKEN=<your_github_token>
