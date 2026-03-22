@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.GithubAccessReport.dto.RepoDTO;
-import com.example.GithubAccessReportservice.GithubService;
+import com.example.GithubAccessReport.service.GithubService;
 
 import lombok.RequiredArgsConstructor;
 
