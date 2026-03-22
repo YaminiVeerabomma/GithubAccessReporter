@@ -1,7 +1,3 @@
-📘 GitHub Access Reporter
+🚀 **GitHub Access Report Service**
 
-This project retrieves all repositories inside a GitHub organization and shows who has access to each repository.
-It exposes APIs to:
-
-Get all repositories
-Get collaborators of a specific repository
+A Spring Boot service that connects to GitHub, fetches all repositories of an organization, retrieves collaborators for each repo, and generates a consolidated report showing which users have access to which repositories.
