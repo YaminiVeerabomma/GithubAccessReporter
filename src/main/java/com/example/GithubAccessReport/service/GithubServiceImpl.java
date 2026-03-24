@@ -10,6 +10,7 @@ import com.example.GithubAccessReport.dto.RepoDTO;
 import com.example.GithubAccessReport.exception.GithubApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -31,10 +32,14 @@ public class GithubServiceImpl implements GithubService {
 
     @Value("${github.api.base-url}")
     private String githubApiBaseUrl;
-
     @Override
+    @Cacheable(value = "github_repos", key = "#orgName")
     public List<RepoDTO> getAllReposWithCollaborators(String orgName) {
+       
+       
+
         try {
+            System.out.println("🔥 Calling GitHub API..."); // to verify cache
             WebClient client = webClientBuilder
                     .baseUrl(githubApiBaseUrl)
                     .defaultHeader("Authorization", "Bearer " + githubToken)
