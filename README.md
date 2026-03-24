@@ -143,3 +143,41 @@ curl "http://localhost:8083/api/github/repos?org=my-org"
 
 - Do not commit tokens to source control.
 - Prefer environment variables or secret managers in production.
+
+## Caching & Caffeine
+🔹 Caching Overview
+- Implemented caching to reduce repeated GitHub API calls and improve response time.
+- First request fetches data from GitHub and stores it in cache.
+- Subsequent requests are served from cache, reducing latency from ~10s to milliseconds.
+- TTL (Time-To-Live) is used to automatically refresh cache after 10 minutes, ensuring data stays reasonably up-to-date.
+
+🔹 Why Caffeine Cache
+- Lightweight in-memory caching solution for Java/Spring Boot.
+- Supports TTL (time-based expiration) and maximum cache size.
+- Does not require external setup, unlike Redis.
+- Provides fast and thread-safe caching for single-instance applications.
+🔹 Implementation Details
+- Added Spring’s @EnableCaching to enable caching support.
+- Used @Cacheable(value = "github_repos", key = "#orgName") on GitHub service method to store API responses.
+- Configured Caffeine Cache Manager with:
+- expireAfterWrite(10 minutes) → cache automatically expires after 10 minutes
+- maximumSize(100) → limits memory usage
+```
+Caffeine.newBuilder()
+    .expireAfterWrite(10, TimeUnit.MINUTES)
+    .maximumSize(100);
+```
+
+**Benefits**:
+- Faster API responses for repeated requests
+- Reduced GitHub API usage (avoids hitting rate limits)
+- Automatic cache expiration without manual intervention
+**🔹 How to Test**
+1.Run the application.
+2.Call the GitHub repos API for an organization the first time → data fetched from GitHub (~10s).
+3.Call the same API again within 10 minutes → data served from cache (milliseconds).
+3.After 10 minutes → cache expires → next call fetches fresh data from GitHub.
+
+##NOTE:
+In real-time production scenarios, Redis is preferred for caching due to its distributed nature and persistence.
+However, for practical/demo purposes, setting up Redis can be complex, so Caffeine is used as a lightweight, in-memory alternative with TTL support.
