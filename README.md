@@ -174,11 +174,11 @@ Caffeine.newBuilder()
 - Reduced GitHub API usage (avoids hitting rate limits)
 - Automatic cache expiration without manual intervention
   
-**🔹 How to Test**
-1.Run the application.
-2.Call the GitHub repos API for an organization the first time → data fetched from GitHub (~10s).
-3.Call the same API again within 10 minutes → data served from cache (milliseconds).
-3.After 10 minutes → cache expires → next call fetches fresh data from GitHub.
+**🔹 How to Test**:
+1. Run the application.
+2. Call the GitHub repos API for an organization the first time → data fetched from GitHub (~10s).
+3. Call the same API again within 10 minutes → data served from cache (milliseconds).
+3. After 10 minutes → cache expires → next call fetches fresh data from GitHub.
 
 ## NOTE:
 - In real-time production scenarios, Redis is preferred for caching due to its distributed nature and persistence.
