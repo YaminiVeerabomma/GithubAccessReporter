@@ -180,6 +180,6 @@ Caffeine.newBuilder()
 3.Call the same API again within 10 minutes → data served from cache (milliseconds).
 3.After 10 minutes → cache expires → next call fetches fresh data from GitHub.
 
-##NOTE:
-In real-time production scenarios, Redis is preferred for caching due to its distributed nature and persistence.
-However, for practical/demo purposes, setting up Redis can be complex, so Caffeine is used as a lightweight, in-memory alternative with TTL support.
+## NOTE:
+- In real-time production scenarios, Redis is preferred for caching due to its distributed nature and persistence.
+- However, for practical/demo purposes, setting up Redis can be complex, so Caffeine is used as a lightweight, in-memory alternative with TTL support.
