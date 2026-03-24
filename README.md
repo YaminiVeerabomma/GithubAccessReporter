@@ -156,6 +156,7 @@ curl "http://localhost:8083/api/github/repos?org=my-org"
 - Supports TTL (time-based expiration) and maximum cache size.
 - Does not require external setup, unlike Redis.
 - Provides fast and thread-safe caching for single-instance applications.
+  
 🔹 Implementation Details
 - Added Spring’s @EnableCaching to enable caching support.
 - Used @Cacheable(value = "github_repos", key = "#orgName") on GitHub service method to store API responses.
@@ -172,6 +173,7 @@ Caffeine.newBuilder()
 - Faster API responses for repeated requests
 - Reduced GitHub API usage (avoids hitting rate limits)
 - Automatic cache expiration without manual intervention
+  
 **🔹 How to Test**
 1.Run the application.
 2.Call the GitHub repos API for an organization the first time → data fetched from GitHub (~10s).
